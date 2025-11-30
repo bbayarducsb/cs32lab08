@@ -1,5 +1,14 @@
 #include "SimpleList.h"
 
+template <class T>
+void destroy(T element) {
+
+}
+
+template <class T>
+void destroy(T* element) {
+    delete element;
+}
 
 template <class T>
 SimpleList<T>::SimpleList() {
@@ -9,7 +18,11 @@ SimpleList<T>::SimpleList() {
 
 template <class T>
 SimpleList<T>::~SimpleList() {
-    delete[] elements; 
+    for(int i = 0; i < numElements; i++) {
+        destroy(elements[i]);
+    }
+
+    delete[] elements;
 }
 
 template <class T>
@@ -62,21 +75,7 @@ void SimpleList<T>::remove(int index) {
     if(numElements == 0) {
         throw EmptyListException();
     }
-    while(index + 1 < numElements) {
-        elements[index] = elements[index + 1]; 
-        index++; 
-    }
-    numElements--;
-}
-
-void SimpleList<T*>::remove(int index) {
-    if(index > numElements || index < 0) {
-        throw InvalidIndexException(); 
-    }
-    if(numElements == 0) {
-        throw EmptyListException();
-    }
-    delete element[index]; 
+    destroy(elements[index]); 
     while(index + 1 < numElements) {
         elements[index] = elements[index + 1]; 
         index++; 
@@ -88,4 +87,3 @@ template <class T>
 int SimpleList<T>::getNumElements() const {
     return numElements; 
 }
-
