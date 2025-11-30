@@ -69,6 +69,21 @@ void SimpleList<T>::remove(int index) {
     numElements--;
 }
 
+void SimpleList<T*>::remove(int index) {
+    if(index > numElements || index < 0) {
+        throw InvalidIndexException(); 
+    }
+    if(numElements == 0) {
+        throw EmptyListException();
+    }
+    delete element[index]; 
+    while(index + 1 < numElements) {
+        elements[index] = elements[index + 1]; 
+        index++; 
+    }
+    numElements--;
+}
+
 template <class T>
 int SimpleList<T>::getNumElements() const {
     return numElements; 
